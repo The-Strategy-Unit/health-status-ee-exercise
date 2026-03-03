@@ -6,7 +6,7 @@ library("ggplot2")
 
 
 # theme_hse ----
-theme_hsee_workshop <- function(
+theme_hseee <- function(
   base_size = 10,
   base_family = "Fira Sans tnum"
 ) {
