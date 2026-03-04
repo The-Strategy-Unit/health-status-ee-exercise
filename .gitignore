@@ -1,7 +1,8 @@
 # Custom
 /data/
 /data_raw/
-/figures/
+/figures/*
+!figures/paper_r2_mixture.png
 
 # History files
 .Rhistory

@@ -2,17 +2,17 @@
 
 # Expert Elicitation Exercise on Future Population Health Status
 
-**Background:** The proportion of years lived in good health by the population have significant resource implications for healthcare systems. Whilst life expectancy forecasts are available in England, disability free life expectancy is not. We organised a facilitated elicitation exercise to obtain long term probabilistic forecasts from eight independent subject matter experts of **percentage of remaining life expectancy at age 65 years that is disability free for females and males in England**.
+The proportion of years lived in good health by the population have significant resource implications for healthcare systems. Whilst life expectancy forecasts are available in England, disability free life expectancy is not. We organised a facilitated elicitation exercise to obtain long term probabilistic forecasts from eight independent subject matter experts of **percentage of remaining life expectancy at age 65 years that is disability free for females and males in England**.
 
-Experts were asked for their view regarding the the following quantity of interest (QOI):
+Experts were asked for their view regarding the following quantity of interest (QOI):
 
 > “For an average female/male (from the middle quantile of deprivation) of age 65 years in 2045, what proportion of their remaining life expectancy will be spent free of disability (without a limiting long-standing illness)?”
 
-Across two-rounds, each expert supplied three parameters a "surprisingly low" (10th percentile &ndash; P10) , "surprisingly high" (90th percentile &ndash; P90) and "most likely" (Mode) forecasts and associated rationales. 
+Across two rounds, each expert provided three estimates: a "most likely" value (Mode), a "surprisingly low" outcome (10th percentile, P10), and a "surprisingly high" outcome (90th percentile, P90), along with rationales for each.
 
-The plot below combines the views of all eight experts into a single probability distribution, where the height of the curve at any point reflects how much collective weight the panel places on values in that region.
+The plot below combines the views of all eight experts into a single probability distribution, where the height of the curve at any point reflects how much collective weight the panel placed on values in that region.
 
-![collective expert view](./figures/paper_r2_mixture.png)
+![collective expert view](/figures/paper_r2_mixture.png)
 
 Summary values from the combined probability distributions.
 
