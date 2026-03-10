@@ -290,3 +290,50 @@ ggsave(
   p5,
   width = 220, height = 165, units = c("mm")
 )
+
+# figure mixture - for GitHub README ----
+facet_labels <- function(x) {
+  data.frame(
+    label = stringr::str_to_title(x$strategy)
+  )
+}
+
+title <- paste0(
+  "Experts' Combined Distribution for the Proportion of Remaining Life Expectancy Spent Disability-Free\n at Age 65 in 2045"
+)
+subtitle <- paste0(
+  "Distributions were combined using equal-weight linear pooling"
+)
+
+p6 <- mix_r2 |>
+  ggplot2::ggplot() +
+  ggplot2::geom_density(
+    ggplot2::aes(x = mix_vals, color = strategy),
+    show.legend = FALSE,
+    linewidth = 1,
+  ) +
+  ggplot2::scale_color_manual(values = pal_sex) +
+  ggplot2::scale_x_continuous(
+    name = NULL,
+    breaks = seq(0, 100, by = 20),
+    limits = c(min_p10, max_p90)
+  ) +
+  ggplot2::scale_y_continuous(name = NULL) +
+  ggplot2::facet_wrap(
+    ggplot2::vars(which_phase, strategy),
+    labeller = facet_labels
+  ) +
+  labs(
+    title = title,
+    subtitle = subtitle
+  ) +
+  ggplot2::theme(
+    panel.background = element_rect(color = NA, fill = "#fff1e6"),
+    plot.background = element_rect(color = NA, fill = "#fff1e6")
+  )
+
+ggsave(
+  here::here("figures", "github_readme.png"),
+  p6,
+  width = 220, height = 165, units = c("mm")
+)

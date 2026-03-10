@@ -2,7 +2,7 @@
 /data/
 /data_raw/
 /figures/*
-!figures/paper_r2_mixture.png
+!figures/github_readme.png
 
 # History files
 .Rhistory
