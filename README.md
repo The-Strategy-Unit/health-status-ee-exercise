@@ -12,7 +12,7 @@ Across two rounds, each expert provided three estimates: a "most likely" value (
 
 The plot below combines the views of all eight experts into a single probability distribution, where the height of the curve at any point reflects how much collective weight the panel placed on values in that region.
 
-![collective expert view](/figures/paper_r2_mixture.png)
+![collective expert view](/figures/github_readme.png)
 
 Summary values from the combined probability distributions.
 
