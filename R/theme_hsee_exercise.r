@@ -7,7 +7,7 @@ library("ggplot2")
 
 # theme_hse ----
 theme_hseee <- function(
-  base_size = 10,
+  base_size = 11,
   base_family = "Fira Sans tnum"
 ) {
 
@@ -35,20 +35,28 @@ theme_hseee <- function(
     axis.line = element_blank(),
     axis.text = element_text(
       size = base_size,
-      color = "#686f73",
+      color = "#1d1d1d",
       hjust = .5
     ),
     axis.ticks.x = element_line(linewidth = .4, color = "#686f73"),
     axis.ticks.y = element_blank(),
     axis.ticks.length.x = unit(2, "mm"),
-    axis.title = element_text(),
+    axis.title.x = element_text(
+      margin = margin(t = 5, r = 0, b = 0, l = 0, unit = "pt"),
+      color = "#1d1d1d"
+    ),
+    axis.title.y = element_text(
+      angle = 90,
+      margin = margin(t = 0, r = 5, b = 0, l = 0, unit = "pt"),
+      color = "#1d1d1d"
+    ),
 
     # legend
     legend.background = element_rect(color = NA, fill = NA),
     legend.spacing = unit(4, "mm"),
     legend.margin = margin(2, 2, 2, 2, "mm"),
     legend.key = element_rect(color = NA, fill = NA),
-    legend.text = element_text(size = base_size),
+    legend.text = element_text(size = base_size, color = "#1d1d1d"),
     legend.title = element_text(),
     legend.position = "right",
     legend.direction = NULL,
@@ -67,7 +75,7 @@ theme_hseee <- function(
     # strip
     strip.background = element_rect(
       color = NA,
-      fill = "#e7e7e7"
+      fill = "#eeeeee"
     ),
     strip.text = element_text(
       family = "Fira Sans",

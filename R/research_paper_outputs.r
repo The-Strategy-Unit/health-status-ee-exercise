@@ -21,12 +21,6 @@ font_hoist("Fira Sans")
 theme_hseee <- theme_hseee()
 ggplot2::theme_set(theme_hseee)
 
-# palettes
-# okabeito_colors() # nolint: commented_code_linter.
-# https://easystats.github.io/see/reference/scale_color_okabeito.html
-pal_params <- c("#56B4E9", "#F5C710", "#56B4E9")
-pal_sex <- c("#D55E00", "#0072B2")
-
 
 # read timeseries ----
 ex_series <- read_ex_series(
@@ -119,25 +113,25 @@ ts3 <- patchwork::wrap_plots(
   ts2,
   ncol = 1
 ) +
-  patchwork::plot_layout(heights = c(1, 0.06, 1))
+  patchwork::plot_layout(heights = c(1, 0.00, 1))
 
 # save timeseries figures
 ggsave(
   here::here("figures", "paper_ts1.png"),
   ts1,
-  width = 220, height = 165, units = c("mm")
+  width = 170, height = 225, units = c("mm")
 )
 
 ggsave(
   here::here("figures", "paper_ts2.png"),
   ts2,
-  width = 220, height = 165, units = c("mm")
+  width = 170, height = 225, units = c("mm")
 )
 
 ggsave(
   here::here("figures", "paper_ts3.png"),
   ts3,
-  width = 220, height = 330, units = c("mm")
+  width = 170, height = 225, units = c("mm")
 )
 
 # read results ----

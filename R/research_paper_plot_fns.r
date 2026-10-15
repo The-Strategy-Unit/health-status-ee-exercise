@@ -7,14 +7,20 @@
 shp_proj <- c(
   "ex-historic" = 16,
   "ex-projection" = 1,
-  "dfle-historic" = 17
+  "dfle-historic" = 16
 ) # [ex-historic|ex-projection|dfle-historic]
+
+# palettes
+# okabeito_colors() # nolint: commented_code_linter.
+# https://easystats.github.io/see/reference/scale_color_okabeito.html
+pal_params <- c("#56B4E9", "#F5C710", "#56B4E9")
+pal_measure <- c("#E69F00", "#56B4E9")
 
 
 # plot LE and DFLE series ----
+# Historic (1980-1982 to 2021-23) and projected (2023 to 2047)
+# LE and DFLE (1980-82 to 2020-22) at age 65, England
 plot_ex_series <- function(df) {
-
-  title <- "Historic (1980-1982 to 2021-23) and projected (2023 to 2047) LE and DFLE (1980-82 to 2020-22) at age 65, England" # nolint: line_length_linter.
 
   df |>
     ggplot2::ggplot() +
@@ -23,52 +29,71 @@ plot_ex_series <- function(df) {
         x = year,
         y = value,
         group = measure,
-        color = sex,
-        shape = series
+        shape = series,
+        color = measure
       ),
-      size = 1.4,
-      show.legend = FALSE
+      size = 1.4
     ) +
     ggplot2::scale_x_continuous(
-      name = NULL,
+      name = "Year",
       limits = c(1980, 2048),
       expand = ggplot2::expansion(add = c(0, 0)),
       breaks = seq.int(1980, 2040, by = 10)
     ) +
     ggplot2::scale_y_continuous(
-      name = NULL,
+      name = "Life expectancy and DFLE at age 65 (years)",
       limits = c(6, 24),
       expand = ggplot2::expansion(add = c(.5, .5)),
       breaks = seq.int(6, 24, by = 4),
       # base R trims trailing spaces when drawing text
       # and regular space does not occupy same width as percent symbol
-      labels = function(x) paste0(x, "<span style='color:transparent'>%</span>") # nolint: line_length_linter.
+      labels = function(x) paste0(x, "<span style='color:transparent'>.</span>") # nolint: line_length_linter.
     ) +
-    ggplot2::scale_shape_manual(values = shp_proj) +
-    ggplot2::labs(title = title) +
+    ggplot2::scale_shape_manual(values = shp_proj, guide = "none") +
+    ggplot2::scale_color_manual(
+      values = pal_measure,
+      breaks = c("ex", "dfle"),
+      labels = c("Life expectancy", "DFLE"),
+      guide = ggplot2::guide_legend(
+        title = NULL,
+        override.aes = list(
+          shape = 16,
+          size = 2.5
+        )
+      )
+    ) +
     ggplot2::facet_wrap(ggplot2::vars(sex)) +
     ggplot2::theme(
       axis.text.y = ggtext::element_markdown(
         family = "Fira Sans tnum",
-        size = 10,
+        size = 11,
         hjust = 1
+      ),
+      legend.position = "inside",
+      legend.position.inside = c(0.98, 0.03),
+      legend.justification.inside = c(1, 0),
+      legend.background = ggplot2::element_blank(),
+      legend.key = ggplot2::element_blank(),
+      legend.text = ggplot2::element_text(
+        family = "Fira Sans",
+        size = 11
       )
     )
 }
 
 # plot QOI series ----
+# Percentage of remaining life free from disability at age 65, England,
+# 1980-82 to 2020-22
 plot_qoi_series <- function(df) {
-
-  title <- "Percentage of remaining life free from disability at age 65, England, 1980-82 to 2020-22" # nolint: line_length_linter.
 
   df |>
     ggplot2::ggplot() +
     ggplot2::geom_point(
       ggplot2::aes(
         x = year,
-        y = qoi,
-        color = sex
+        y = qoi
       ),
+      color = "#009E73",
       size = 1.4,
       shape = 16,
       show.legend = FALSE
@@ -76,29 +101,31 @@ plot_qoi_series <- function(df) {
     ggplot2::geom_line(
       ggplot2::aes(
         x = year,
-        y = qoi,
-        color = sex
+        y = qoi
       ),
+      color = "#009E73",
       linewidth = .5,
       show.legend = FALSE
     ) +
     ggplot2::scale_x_continuous(
-      name = NULL,
+      name = "Year",
       limits = c(1980, 2048),
       expand = ggplot2::expansion(add = c(0, 0)),
       breaks = seq.int(1980, 2040, by = 10)
     ) +
     ggplot2::scale_y_continuous(
-      name = NULL,
+      name = "Remaining life disability-free at age 65 (%)",
       limits = c(45, 62),
       expand = expansion(add = c(.5, .5)),
       breaks = seq.int(40, 65, by = 5),
-      labels = function(x) paste0(x, "%")
+      # labels = function(x) paste0(x, "%")
+      labels = function(x) paste0(x, "<span style='color:transparent'>.</span>") # nolint: line_length_linter.
     ) +
-    ggplot2::labs(title = title) +
     ggplot2::facet_wrap(ggplot2::vars(sex)) +
     ggplot2::theme(
-      axis.text.y = ggplot2::element_text(
+      axis.text.y = ggtext::element_markdown(
+        family = "Fira Sans tnum",
+        size = 10,
         hjust = 1
       )
     )
