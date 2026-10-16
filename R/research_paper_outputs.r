@@ -312,8 +312,9 @@ facet_labels <- function(x) {
 }
 
 title <- paste0(
-  "Experts' Combined Distribution for the Proportion of Remaining Life Expectancy Spent Disability-Free\n at Age 65 in 2045"
+  "Pooled subject matter expert probability density functions for the percentage of remaining life\nexpectancy lived free from disability at age 65 years in 2045"
 )
+
 subtitle <- paste0(
   "Distributions were combined using equal-weight linear pooling"
 )
