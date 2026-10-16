@@ -123,9 +123,23 @@ ggsave(
 )
 
 ggsave(
+  here::here("figures", "paper_ts1.pdf"),
+  ts1,
+  device = cairo_pdf,
+  width = 170, height = 100, units = "mm"
+)
+
+ggsave(
   here::here("figures", "paper_ts2.png"),
   ts2,
   width = 170, height = 100, units = c("mm")
+)
+
+ggsave(
+  here::here("figures", "paper_ts2.pdf"),
+  ts2,
+  device = cairo_pdf,
+  width = 170, height = 100, units = "mm"
 )
 
 ggsave(
@@ -255,9 +269,23 @@ ggsave(
 )
 
 ggsave(
+  here::here("figures", "paper_r1_pdfs.pdf"),
+  p3,
+  device = cairo_pdf,
+  width = 170, height = 100, units = "mm"
+)
+
+ggsave(
   here::here("figures", "paper_r2_pdfs.png"),
   p4,
   width = 170, height = 100, units = c("mm")
+)
+
+ggsave(
+  here::here("figures", "paper_r2_pdfs.pdf"),
+  p4,
+  device = cairo_pdf,
+  width = 170, height = 100, units = "mm"
 )
 
 # figure mixture ----
@@ -267,6 +295,13 @@ ggsave(
   here::here("figures", "paper_r2_mixture.png"),
   p5,
   width = 170, height = 100, units = c("mm")
+)
+
+ggsave(
+  here::here("figures", "paper_r2_mixture.pdf"),
+  p5,
+  device = cairo_pdf,
+  width = 170, height = 100, units = "mm"
 )
 
 # figure mixture - for GitHub README ----
