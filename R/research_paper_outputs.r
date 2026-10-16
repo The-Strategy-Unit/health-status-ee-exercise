@@ -80,7 +80,7 @@ dfle_series <- dplyr::bind_rows(dfle_long, dfle_short) |>
 ex_series_df <- dplyr::bind_rows(ex_series, proj_ex_series) |>
   dplyr::left_join(dfle_series, dplyr::join_by(year, sex)) |>
   dplyr::mutate(
-    sex = dplyr::if_else(sex == "f", "Females", "Males")
+    sex = dplyr::if_else(sex == "f", "Female", "Male")
   ) |>
   tidyr::pivot_longer(
     cols = c("ex", "dfle"),
@@ -119,13 +119,13 @@ ts3 <- patchwork::wrap_plots(
 ggsave(
   here::here("figures", "paper_ts1.png"),
   ts1,
-  width = 170, height = 225, units = c("mm")
+  width = 170, height = 100, units = c("mm")
 )
 
 ggsave(
   here::here("figures", "paper_ts2.png"),
   ts2,
-  width = 170, height = 225, units = c("mm")
+  width = 170, height = 100, units = c("mm")
 )
 
 ggsave(
@@ -220,22 +220,6 @@ t1_out <- dplyr::bind_rows(t1, t1_last_row)
 readr::write_csv(t1_out, here::here("data", "paper_table-1.csv"))
 
 # figures params ----
-prep_params <- function(df) {
-  df |>
-    dplyr::select(id, lo:mode, which_phase, strategy) |>
-    tidyr::pivot_longer(
-      cols = lo:mode,
-      names_to = "param",
-      values_to = "value"
-    ) |>
-    dplyr::mutate(
-      param = factor(
-        param,
-        levels = c("lo", "mode", "hi")
-      )
-    )
-}
-
 p1_dat <- prep_params(res_r1)
 p2_dat <- prep_params(res_r2)
 
@@ -267,13 +251,13 @@ p4 <- plot_pdfs(simul_r2)
 ggsave(
   here::here("figures", "paper_r1_pdfs.png"),
   p3,
-  width = 220, height = 165, units = c("mm")
+  width = 170, height = 100, units = c("mm")
 )
 
 ggsave(
   here::here("figures", "paper_r2_pdfs.png"),
   p4,
-  width = 220, height = 165, units = c("mm")
+  width = 170, height = 100, units = c("mm")
 )
 
 # figure mixture ----
@@ -282,7 +266,7 @@ p5 <- plot_mix(mix_r2, simul_r2)
 ggsave(
   here::here("figures", "paper_r2_mixture.png"),
   p5,
-  width = 220, height = 165, units = c("mm")
+  width = 170, height = 100, units = c("mm")
 )
 
 # figure mixture - for GitHub README ----
@@ -304,17 +288,20 @@ p6 <- mix_r2 |>
   ggplot2::geom_density(
     ggplot2::aes(x = mix_vals, color = strategy),
     show.legend = FALSE,
+    color = "#D55E00",
     linewidth = 1,
   ) +
-  ggplot2::scale_color_manual(values = pal_sex) +
   ggplot2::scale_x_continuous(
     name = NULL,
     breaks = seq(0, 100, by = 20),
     limits = c(min_p10, max_p90)
   ) +
-  ggplot2::scale_y_continuous(name = NULL) +
+  ggplot2::scale_y_continuous(
+    name = NULL,
+    labels = function(x) sub("^0\\.", ".", sprintf("%.2f", x))
+  ) +
   ggplot2::facet_wrap(
-    ggplot2::vars(which_phase, strategy),
+    ggplot2::vars(strategy),
     labeller = facet_labels
   ) +
   labs(
@@ -329,5 +316,5 @@ p6 <- mix_r2 |>
 ggsave(
   here::here("figures", "github_readme.png"),
   p6,
-  width = 220, height = 165, units = c("mm")
+  width = 220, height = 170, units = c("mm")
 )
