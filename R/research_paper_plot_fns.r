@@ -41,7 +41,7 @@ plot_ex_series <- function(df) {
       breaks = seq.int(1980, 2040, by = 10)
     ) +
     ggplot2::scale_y_continuous(
-      name = "Life expectancy and DFLE at age 65 (years)",
+      name = "Remaining LE and DFLE at age 65 (years)",
       limits = c(6, 24),
       expand = ggplot2::expansion(add = c(.5, .5)),
       breaks = seq.int(6, 24, by = 4),
@@ -70,7 +70,7 @@ plot_ex_series <- function(df) {
         hjust = 1
       ),
       legend.position = "inside",
-      legend.position.inside = c(0.98, 0.03),
+      legend.position.inside = c(0.99, 0.03),
       legend.justification.inside = c(1, 0),
       legend.background = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
@@ -132,12 +132,27 @@ plot_qoi_series <- function(df) {
 }
 
 # plot params ----
+prep_params <- function(df) {
+  df |>
+    dplyr::select(id, lo:mode, which_phase, strategy) |>
+    tidyr::pivot_longer(
+      cols = lo:mode,
+      names_to = "param",
+      values_to = "value"
+    ) |>
+    dplyr::mutate(
+      param = factor(
+        param,
+        levels = c("lo", "mode", "hi")
+      )
+    )
+}
+
 facet_labels <- function(x) {
   data.frame(
     label = paste(
       x$which_phase,
       stringr::str_to_title(x$strategy),
-      sep = ": "
     )
   )
 }
@@ -174,12 +189,12 @@ plot_params <- function(df) {
       ggplot2::vars(which_phase, strategy),
       labeller = facet_labels
     ) +
-    labs(
+    ggplot2::labs(
       title = title,
       subtitle = subtitle
     ) +
     ggplot2::theme(
-      panel.grid.major.x = element_line(
+      panel.grid.major.x = ggplot2::element_line(
         linewidth = .2,
         linetype = "2222",
         color = "#d3d3d3"
@@ -188,16 +203,13 @@ plot_params <- function(df) {
 }
 
 # plot simulated pdfs ----
-plot_pdfs <- function(df) {
+facet_labels <- function(x) {
+  data.frame(
+    label = stringr::str_to_title(x$strategy)
+  )
+}
 
-  title <- paste0(
-    "Expert distributions, round-",
-    df$which_phase[1]
-  )
-  subtitle <- paste0(
-    "Each distribution encodes a different expert's beliefs ",
-    "about the QOI in 2045"
-  )
+plot_pdfs <- function(df) {
 
   df |>
     tidyr::unnest_longer(sim_vals) |>
@@ -209,31 +221,25 @@ plot_pdfs <- function(df) {
     # ggplot2::scale_color_manual(values = MetBrewer::met.brewer("Hiroshige")) +
     see::scale_color_okabeito() +
     ggplot2::scale_x_continuous(
-      name = NULL,
+      name = "Remaining life disability-free at age 65 (%)",
       breaks = seq(0, 100, by = 20),
       limits = c(min_p10, max_p90)
     ) +
-    ggplot2::scale_y_continuous(name = NULL) +
-    ggplot2::facet_wrap(
-      ggplot2::vars(which_phase, strategy),
-      labeller = facet_labels
+    ggplot2::scale_y_continuous(
+      name = "Density",
+      breaks = seq(0, 0.11, by = 0.02),
+      limits = c(0, 0.115),
+      expand = ggplot2::expansion(0, 0),
+      labels = function(x) sub("^0\\.", ".", sprintf("%.2f", x))
     ) +
-    labs(
-      title = title,
-      subtitle = subtitle
+    ggplot2::facet_wrap(
+      ggplot2::vars(strategy),
+      labeller = facet_labels
     )
 }
 
 # plot simulated mixture ----
 plot_mix <- function(df_mix, df_simul) {
-
-  title <- paste0(
-    "Final combined view of QOI in 2045, round-",
-    df_mix$which_phase[1]
-  )
-  subtitle <- paste0(
-    "Distributions are combined using equal-weight linear pooling"
-  )
 
   df_mix |>
     ggplot2::ggplot() +
@@ -241,6 +247,7 @@ plot_mix <- function(df_mix, df_simul) {
     ggplot2::geom_density(
       ggplot2::aes(x = sim_vals, group = email),
       color = "#d8d8d8",
+      linewidth = .5,
       data = df_simul |>
         dplyr::select(email, strategy, sim_vals) |>
         tidyr::unnest_longer(sim_vals)
@@ -248,21 +255,23 @@ plot_mix <- function(df_mix, df_simul) {
     ggplot2::geom_density(
       ggplot2::aes(x = mix_vals, color = strategy),
       show.legend = FALSE,
-      linewidth = 1,
+      color = "#D55E00",
+      linewidth = .8,
     ) +
-    ggplot2::scale_color_manual(values = pal_sex) +
     ggplot2::scale_x_continuous(
-      name = NULL,
+      name = "Remaining life disability-free at age 65 (%)",
       breaks = seq(0, 100, by = 20),
       limits = c(min_p10, max_p90)
     ) +
-    ggplot2::scale_y_continuous(name = NULL) +
-    ggplot2::facet_wrap(
-      ggplot2::vars(which_phase, strategy),
-      labeller = facet_labels
+    ggplot2::scale_y_continuous(
+      name = "Density",
+      breaks = seq(0, 0.12, by = 0.02),
+      limits = c(0, 0.115),
+      expand = ggplot2::expansion(0, 0),
+      labels = function(x) sub("^0\\.", ".", sprintf("%.2f", x))
     ) +
-    labs(
-      title = title,
-      subtitle = subtitle
+    ggplot2::facet_wrap(
+      ggplot2::vars(strategy),
+      labeller = facet_labels
     )
 }
